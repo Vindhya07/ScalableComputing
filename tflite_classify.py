@@ -11,7 +11,6 @@ import numpy
 import string
 import random
 import argparse
-import tensorflow.keras as keras
 import csv
 
 def decode(characters, y):
