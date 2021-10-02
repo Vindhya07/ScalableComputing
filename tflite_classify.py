@@ -4,7 +4,7 @@
 import warnings
 import tflite_runtime.interpreter as tflite
 from tflite_runtime.interpreter import Interpreter
-import tensorflow as tf
+
 import os
 import cv2
 import numpy
