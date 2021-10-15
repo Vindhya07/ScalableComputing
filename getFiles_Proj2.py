@@ -5,12 +5,11 @@ url = 'https://cs7ns1.scss.tcd.ie/index.php/?shortname=vnagaraj&download=resume_
 myFileNames = requests.get(url).text
 
 print(myFileNames)
-print(os.getcwd())
+# print(os.getcwd())
 
-# for i in myFileNames.split(',\n'):
-#   file_url = 'https://cs7ns1.scss.tcd.ie/index.php/?shortname=vnagaraj&download=resume_speed&myfilename=' + i
-#   os.chdir('vnagaraj-files2')
-#   myFiles = requests.get(file_url)
-#   myFile = open(i, "wb")
-#   myFile.write(myFiles.content)
-#   myFile.close()
+for i in myFileNames.split(',\n'):
+  file_url = 'https://cs7ns1.scss.tcd.ie/index.php/?shortname=vnagaraj&download=resume_speed&myfilename=' + i
+  myFiles = requests.get(file_url)
+  myFile = open(i, "wb")
+  myFile.write(myFiles.content)
+  myFile.close()
