@@ -20,6 +20,24 @@ def decode(characters, y):
 def load_labels(filename):
   with open(filename, 'r') as f:
     return [line.strip() for line in f.readlines()]
+def removeNoise(image):
+    gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+    img = ~gray
+    img = cv2.erode(img, numpy.ones((2, 2), numpy.uint8), iterations=1)
+    img = ~img  # black letters, white background
+    img = scipy.ndimage.median_filter(img, (5, 1))
+    img = scipy.ndimage.median_filter(img, (1, 1))
+    thresh = ~cv2.threshold(img, 128, 255, cv2.THRESH_BINARY | cv2.THRESH_OTSU)[1]
+
+    contours = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+    contours = contours[0] if len(contours) == 2 else contours[1]
+    for c in contours:
+        area = cv2.contourArea(c)
+        if area < 20:
+            cv2.drawContours(thresh, [c], -1, 0, -1)
+
+    result = 255 - thresh
+    return cv2.GaussianBlur(result, (3, 3), 0)
 
 def main():
     parser = argparse.ArgumentParser()
@@ -67,10 +85,8 @@ def main():
         for x in os.listdir(args.captcha_dir):
             # load image and preprocess it
             raw_data = cv2.imread(os.path.join(args.captcha_dir, x))
-            rgb_data = cv2.cvtColor(raw_data, cv2.COLOR_BGR2RGB)
-            image = numpy.array(rgb_data) / 255.0
-            (c, h, w) = image.shape
-            image = image.reshape([-1, c, h, w])
+            image = removeNoise(raw_data)
+            image = image.reshape([-1, 64, 128, 1])
                 
 
             input_shape = input_details[0]['shape']
