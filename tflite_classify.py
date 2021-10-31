@@ -101,14 +101,15 @@ def main():
             captcha_op = ''
             # The function `get_tensor()` returns a copy of the tensor data.
             # Use `tensor()` in order to get a pointer to the tensor.
-            for i in range(5):   
+            for i in range(6):   
                 output_data = interpreter.get_tensor(output_details[i]['index'])
                 od = numpy.squeeze(output_data)
                 # labels = load_labels('symbols.txt')
                 od_char=numpy.argmax(od)
                 captcha_op = captcha_op + symbols_list[od_char]
-
+            captcha_op = captcha_op.replace("&", "")
             print(x+ "," + captcha_op)
+            
             arr.append(x+','+captcha_op)
 
         arr = sorted(arr, key=str)
