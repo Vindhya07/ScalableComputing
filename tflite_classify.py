@@ -17,7 +17,7 @@ import scipy.ndimage
 
 def decode(characters, y):
     y = numpy.argmax(numpy.array(y), axis=2)[:,0]
-    return ''.join([characters[x] for x in y])
+    return ''.join([y_dict.get(x, '') for x in y]).replace("&", "")
 
 def load_labels(filename):
   with open(filename, 'r') as f:
