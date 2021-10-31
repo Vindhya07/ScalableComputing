@@ -54,7 +54,7 @@ def main():
 
     with open(args.output, 'w') as output_file:
         output_file.write("vnagaraj/n")
-        interpreter = Interpreter("model.tflite")
+        interpreter = Interpreter(args.model_name)
         interpreter.allocate_tensors()
         input_details = interpreter.get_input_details()
         output_details = interpreter.get_output_details()
