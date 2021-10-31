@@ -12,6 +12,8 @@ import string
 import random
 import argparse
 import csv
+import scipy
+import scipy.ndimage
 
 def decode(characters, y):
     y = numpy.argmax(numpy.array(y), axis=2)[:,0]
